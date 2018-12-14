@@ -22,6 +22,7 @@ function init(){
     list.push("微鲤看看");//每天稳定0.5
     list.push("惠头条");//
     list.push("牛牛头条");//
+    list.push("头条多多");//
 
     /**
      * 完犊子
