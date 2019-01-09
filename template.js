@@ -57,7 +57,7 @@ template.run = function(fun){
         //阅读新闻60s
         template.readNews(60);
         //返回新闻列表
-        utils.backToIndex(indexFlagText);
+        utils.backToIndex(initParam.indexFlagText);
     }
 }
 
