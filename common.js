@@ -53,10 +53,13 @@ util.UITextClick = function(textContent) {
 //通过UI文本的坐标点击
 util.UITextBoundsClick = function(textContent) {
     var thisEle = text(textContent).findOnce();
+    var flag = false;
     if (thisEle) {
         util.boundsClick(thisEle);
+        flag = true;
     }
     sleep(1000);
+    return flag;
 }
 
 //通过UI点击

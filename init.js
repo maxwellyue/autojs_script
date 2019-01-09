@@ -6,15 +6,15 @@ const utils = require('common.js');
  * 2：小米app商城下载
  */
 //趣头条
-//download("http://api.1sapp.com/app/download",1);
+download("http://api.1sapp.com/app/download",1);
 //中青看点
-//download("https://res.youth.cn/youth_v1.2.8_code20_180824_c3001.apk",1);
+download("https://res.youth.cn/youth_v1.2.8_code20_180824_c3001.apk",1);
 //红包头条
-//download("https://www.wandoujia.com/apps/com.martian.hbnews/download/dot?ch=detail_normal_dl",1);
+download("https://www.wandoujia.com/apps/com.martian.hbnews/download/dot?ch=detail_normal_dl",1);
 //微鲤看看
-//download("https://www.wandoujia.com/apps/cn.weli.story/download/dot?ch=detail_normal_dl",1);
+download("https://www.wandoujia.com/apps/cn.weli.story/download/dot?ch=detail_normal_dl",1);
 //牛牛头条
-//download("https://www.wandoujia.com/apps/com.huolea.bull/download/dot?ch=detail_normal_dl",1);
+download("https://www.wandoujia.com/apps/com.huolea.bull/download/dot?ch=detail_normal_dl",1);
 //惠头条
 download("https://www.wandoujia.com/apps/com.cashtoutiao/download/dot?ch=detail_normal_dl",1);
 //薪头条
