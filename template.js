@@ -1,4 +1,4 @@
-const utils = require('common.js');
+const utils = require('./common.js');
 var template = {};
 
 /**
@@ -7,6 +7,7 @@ var template = {};
 var initParam = {
     appName:"",//应用名称
     lastNewsText:"",//上一次新闻标题
+
     totalNewsReaded : 0,//已经阅读的新闻条数
     totalNewsOneTime : 50,//一次性阅读多少条新闻
     loopTimeToFindNews : 20,//找了多少次新闻找不到会退出
@@ -92,8 +93,8 @@ template.getTimeAward = function(){
  */
 template.getOneNews = function(findNewsItem){
     //阅读超过50条，刷新页面
-    if(totalNewsReaded > totalNewsOneTime){
-        totalNews = 0;
+    if(initParam.totalNewsReaded > initParam.totalNewsOneTime){
+        initParam.totalNews = 0;
         click(1,1919);
         sleep(2000);
     }
@@ -102,10 +103,10 @@ template.getOneNews = function(findNewsItem){
     var isFindNews = false;//是否找到新闻
     var newsText = "";//新闻标题
     var newsItem;//新闻条目
-    loopTimeToFindNews = 0;//循环次数
-    while((!isFindNews || lastNewsText === newsText)  && loopTimeToFindNews < 20){
+    initParam.loopTimeToFindNews = 0;//循环次数
+    while((!isFindNews || initParam.lastNewsText === newsText)  && initParam.loopTimeToFindNews < 20){
         //找新闻次数+1
-        loopTimeToFindNews++;
+        initParam.loopTimeToFindNews++;
 
         //进行下翻
         swipe(device.width / 2, device.height / 4 * 2,  device.width / 2, device.height / 4, 1000);
@@ -121,8 +122,8 @@ template.getOneNews = function(findNewsItem){
 
     //找到新闻，点击阅读
     if(isFindNews){
-        lastNewsText = newsText;
-        totalNewsReaded++;
+        initParam.lastNewsText = newsText;
+        initParam.totalNewsReaded++;
         newsItem.click();
     }else{
         toast("20次滑动没有找到新闻，请检查新闻ID");
@@ -132,6 +133,12 @@ template.getOneNews = function(findNewsItem){
 
 //阅读新闻
 template.readNews = function(seconds){
+    //退出图集
+    sleep(1000);
+    if(id("i8").findOnce()){
+        return;
+    }
+
     //滑动阅读新闻
     for(var i = 0 ;i < seconds/10 ;i++){
         utils.swapeToRead();
