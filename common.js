@@ -67,7 +67,7 @@ util.backToIndex = function(indexFlagText) {
     var indexBtn = false;
     while(!indexBtn){
         back();
-        sleep(500);
+        sleep(1000);
         indexBtn = text(indexFlagText).findOnce();
     }
 }

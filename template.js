@@ -37,7 +37,7 @@ template.run = function(fun){
     /**
      * 回归首页的位置
      */
-    template.jumpToIndex();
+    template.jumpToIndex(fun.getIndexBtnItem);
 
     /**
      * 签到
@@ -51,11 +51,11 @@ template.run = function(fun){
      */
     while(true){
         //领取时段奖励
-        template.getTimeAward();
+        template.getTimeAward(fun.doingAfterTimeAward);
         //找到一条新闻
         template.getOneNews(fun.findNewsItem);
         //阅读新闻60s
-        template.readNews(60);
+        template.readNews(60,fun.isShouldBack);
         //返回新闻列表
         utils.backToIndex(initParam.indexFlagText);
     }
@@ -65,11 +65,18 @@ template.run = function(fun){
  * 跳转到首页
  * 1、返回和首页标识一起判断
  */
-template.jumpToIndex = function(){
+template.jumpToIndex = function(getIndexBtnItem){
+
     var indexFlag = text(initParam.indexFlagText).findOnce();
     while(!indexFlag){
         //点击首页标识性文字
-        var flag = utils.UITextBoundsClick(initParam.indexBtnText);
+        var flag = false;
+        if(getIndexBtnItem == null){
+            flag = utils.UITextBoundsClick(initParam.indexBtnText);
+        }else{
+            flag = getIndexBtnItem().click();
+        }
+        
         //执行返回
         if(!flag){
             back();
@@ -83,9 +90,12 @@ template.jumpToIndex = function(){
 /**
  * 获取时段奖励
  */
-template.getTimeAward = function(){
+template.getTimeAward = function(doingAfterTimeAward){
     utils.UITextBoundsClick(initParam.timeAwardText);
-    //TODO 判断是否有提示
+    //判断是否有提示
+    if(doingAfterTimeAward != null){
+        doingAfterTimeAward();
+    }
 }
 
 /**
@@ -132,16 +142,20 @@ template.getOneNews = function(findNewsItem){
 }
 
 //阅读新闻
-template.readNews = function(seconds){
-    //退出图集
-    sleep(1000);
-    if(id("i8").findOnce()){
-        return;
-    }
+template.readNews = function(seconds,isShouldBack){
 
     //滑动阅读新闻
     for(var i = 0 ;i < seconds/10 ;i++){
         utils.swapeToRead();
+
+        //判断是否直接返回
+        var shouldBack = false;
+        if(isShouldBack != null){
+            shouldBack = isShouldBack();
+        }
+        if(shouldBack){
+            return;
+        }
     }
 }
 
