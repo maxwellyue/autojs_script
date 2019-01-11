@@ -35,6 +35,7 @@ templates.run({
     },
     //阅读页面是否应该返回
     isShouldBack:function(){
+        commons.UITextClick("取消");
         return false;
     },
     //时段奖励之后执行
