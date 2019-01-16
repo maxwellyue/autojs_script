@@ -4,8 +4,6 @@
  * 2、虚拟步数：大牛助手
  * 2、虚拟IP：
  */
-
-
 /**
  * 执行规则
  * 1、顺序执行
@@ -15,54 +13,43 @@
  */
 init();
 function init(){
-    var list = new Array();
-    
-    /**
-     * 靠谱稳定不被封
-     */
-    list.push("趣头条");//每天稳定5毛
-    list.push("中青看点");// 奖励到200就不会增加了
-    list.push("微鲤看看");//每天稳定0.5
-    list.push("红包头条");//每天稳定0.2
-    list.push("惠头条");//
-    list.push("牛牛头条");//
-
-    /**
-     * 验证中
-     */
-    // list.push("头条多多");//
-    // list.push("薪头条");//
-    // list.push("看看赚");//
-    // list.push("兔头条");//
-    // list.push("点米头条");//
-
-    /**
-     * 完犊子
-     */
-    //list.push("芝麻头条");//有人机认证
-    //list.push("东方头条");//夜里刷被封
-    //list.push("芒果看点");//被封
-
-    /**
-     * 执行条件：
-     * 1、0-7点不执行
-     * 2、顺序阅读
-     */
-    var normalRumTime = 0.5*60*60;//每次阅读的时间
+    //每次阅读的时间
+    var normalRumTime = 0.5*60*60;
     while(true){
+        var config = getConfig();
+        //新闻类的列表
+        var newsList = config.newsAppList;
+        //视频类的列表
+        var videoList = config.videoAppList;
+
+        /**
+         * 0-7点阅读视频
+         * 其他时间阅读新闻
+         */
         if(new Date().getHours() >= 7){
-            var appNum = list.length;
+            var appNum = newsList.length;
             for(var i = 0;i< appNum;i++){
                 exec(list[i],normalRumTime);
             }
         }else{
+            //TODO
             sleep(1000*60*30);//睡眠半个小时
         }
     }
 }
 
+//获取主配置
+function getConfig(){
+    var url = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/config.json";
+    var str = http.get(url)
+    str = JSON.parse(str.body.string());
+    return str;
+}
+
 //执行脚本
 function exec(scriptName,seconds){
+
+
     var startDate = new Date();//开始时间
     var exectuion = engines.execScriptFile("/sdcard/脚本/"+scriptName+".js");
 
@@ -100,5 +87,24 @@ function stopCurrent(exectuion){
     sleep(1000);
     home();
     sleep(5000);
+}
+
+function updateScript(scriptName,scriptVersion){
+    var url = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/version.js";
+    var str = http.get(url)
+    str = JSON.parse(str.body.string());
+    for(var i = 0; i< str.length;i++){
+        var thisScript = str[i];
+        var name = thisScript.name;
+        var version = thisScript.version;
+        
+        if(scriptName == name && version != scriptVersion){
+            var path = "/sdcard/"+scriptName+".js";
+            var scriptContent = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/"+scriptName+".js";
+            files.write(path,scriptContent);
+            return true;
+        }
+        return false;
+    }
 }
 
