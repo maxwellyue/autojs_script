@@ -48,8 +48,10 @@ function getConfig(){
 
 //执行脚本
 function exec(scriptName,seconds){
+    //自动获取脚本更新
+    updateScript(scriptName);
 
-
+    //开始执行
     var startDate = new Date();//开始时间
     var exectuion = engines.execScriptFile("/sdcard/脚本/"+scriptName+".js");
 
@@ -89,7 +91,11 @@ function stopCurrent(exectuion){
     sleep(5000);
 }
 
-function updateScript(scriptName,scriptVersion){
+//更新脚本
+function updateScript(scriptName){
+    var storage = storages.create("version");
+    var scriptVersion = storage.get(scriptName);
+
     var url = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/version.js";
     var str = http.get(url)
     str = JSON.parse(str.body.string());
@@ -99,9 +105,10 @@ function updateScript(scriptName,scriptVersion){
         var version = thisScript.version;
         
         if(scriptName == name && version != scriptVersion){
-            var path = "/sdcard/"+scriptName+".js";
+            var path = "/sdcard/脚本/"+scriptName+".js";
             var scriptContent = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/"+scriptName+".js";
             files.write(path,scriptContent);
+            storage.put(scriptName,version);
             return true;
         }
         return false;

@@ -1,22 +1,28 @@
 {
     "newsAppList":[
         {
-            "name":"趣头条"
+            "name":"趣头条",
+            "version":1
         },
         {
-            "name":"中青看点"
+            "name":"中青看点",
+            "version":1
         },
         {
-            "name":"微鲤看看"
+            "name":"微鲤看看",
+            "version":1
         },
         {
-            "name":"红包头条"
+            "name":"红包头条",
+            "version":1
         },
         {
-            "name":"惠头条"
+            "name":"惠头条",
+            "version":1
         },
         {
-            "name":"牛牛头条"
+            "name":"牛牛头条",
+            "version":1
         }
     ],
     "videoAppList":[
