@@ -13,6 +13,7 @@
  */
 init();
 function init(){
+    storages.remove("version");
     //每次阅读的时间
     var normalRumTime = 0.5*60*60;
     while(true){
@@ -29,7 +30,7 @@ function init(){
         if(new Date().getHours() >= 7){
             var appNum = newsList.length;
             for(var i = 0;i< appNum;i++){
-                exec(list[i],normalRumTime);
+                exec(newsList[i].name,normalRumTime);
             }
         }else{
             //TODO
@@ -99,18 +100,17 @@ function updateScript(scriptName){
     var storage = storages.create("version");
     var scriptVersion = storage.get(scriptName);
 
-    var url = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/version.js";
-    var str = http.get(url)
-    str = JSON.parse(str.body.string());
-    for(var i = 0; i< str.length;i++){
-        var thisScript = str[i];
+    var config = getConfig();
+    var newsAppList = config.newsAppList;
+    for(var i = 0; i< newsAppList.length;i++){
+        var thisScript = newsAppList[i];
         var name = thisScript.name;
         var version = thisScript.version;
         
         if(scriptName == name && version != scriptVersion){
             toast("检测开始更新");
             var path = "/sdcard/脚本/"+scriptName+".js";
-            var scriptContent = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/"+scriptName+".js";
+            var scriptContent = http.get("https://raw.githubusercontent.com/RyanPro/autojs_script/master/"+scriptName+".js").body.string();
             files.write(path,scriptContent);
             storage.put(scriptName,version);
             toast("检测更新完成");
