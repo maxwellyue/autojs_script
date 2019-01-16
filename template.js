@@ -77,6 +77,10 @@ template.autoUpdate = function(fun){
         updateFlag = true;
         updateBtn = text("立即升级").findOnce();
     }
+    if(text("立即更新").findOnce()){
+        updateFlag = true;
+        updateBtn = text("立即更新").findOnce();
+    }
     if(text("升级").findOnce()){
         updateFlag = true;
         updateBtn = text("升级").findOnce();
@@ -88,7 +92,7 @@ template.autoUpdate = function(fun){
         return;
     }
 
-    //循环找安装
+    //循环找安装，有可能安装还不能用
     var installFlag = false;
     while(!installFlag){
         sleep(1000);
@@ -96,7 +100,11 @@ template.autoUpdate = function(fun){
         toast("开始找安装");
         if(uiele){
             uiele.click();
-            installFlag = true;
+            sleep(1000);
+            uiele = text("安装").findOnce();
+            if(!uiele){
+                installFlag = true;
+            }
         }
     }
     //安装完成
