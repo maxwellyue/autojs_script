@@ -40,6 +40,16 @@ util.UIClick = function(eleId) {
     }
     sleep(1000);
 }
+util.idClick = function(eleId) {
+    var uiele = id(eleId).findOnce();
+    var flag = false;
+    if(uiele){
+        uiele.click();
+        flag = true;
+    }
+    sleep(1000);
+    return flag;
+}
 
 //通过UI文本点击
 util.UITextClick = function(textContent) {
@@ -48,6 +58,16 @@ util.UITextClick = function(textContent) {
         uiele.click();
     }
     sleep(1000);
+}
+util.textClick = function(textContent) {
+    var uiele = text(textContent).findOnce();
+    var flag = false;
+    if(uiele){
+        uiele.click();
+        flag = true;
+    }
+    sleep(1000);
+    return flag;
 }
 
 //通过UI文本的坐标点击
@@ -61,14 +81,46 @@ util.UITextBoundsClick = function(textContent) {
     sleep(1000);
     return flag;
 }
+util.textBoundsClick = function(textContent) {
+    var thisEle = text(textContent).findOnce();
+    var flag = false;
+    if (thisEle) {
+        util.boundsClick(thisEle);
+        flag = true;
+    }
+    sleep(1000);
+    return flag;
+}
 
 //通过UI点击
 util.backToIndex = function(indexFlagText) {
     var indexBtn = false;
+    var loop = 0;
     while(!indexBtn){
         back();
         sleep(1000);
         indexBtn = text(indexFlagText).findOnce();
+
+        //超出退出时长的，做一些特殊处理
+        
+        if(loop > 5){
+            //无限返回的页面
+            var isSucc = util.textClick("关闭");
+            if(!isSucc){
+                util.textBoundsClick("关闭");
+            }
+
+            //系统的安装页面
+            if(!isSucc){
+                util.UITextClick("取消");
+            }
+
+            //成功关闭
+            if(isSucc){
+                indexBtn = true;
+            }
+        }
+        loop++;
     }
 }
 

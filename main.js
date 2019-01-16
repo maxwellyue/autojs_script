@@ -40,9 +40,11 @@ function init(){
 
 //获取主配置
 function getConfig(){
+    toast("开始获取配置");
     var url = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/config.json";
     var str = http.get(url)
     str = JSON.parse(str.body.string());
+    toast("配置获取完成");
     return str;
 }
 
@@ -93,6 +95,7 @@ function stopCurrent(exectuion){
 
 //更新脚本
 function updateScript(scriptName){
+    toast("检测脚本更新");
     var storage = storages.create("version");
     var scriptVersion = storage.get(scriptName);
 
@@ -105,12 +108,15 @@ function updateScript(scriptName){
         var version = thisScript.version;
         
         if(scriptName == name && version != scriptVersion){
+            toast("检测开始更新");
             var path = "/sdcard/脚本/"+scriptName+".js";
             var scriptContent = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/"+scriptName+".js";
             files.write(path,scriptContent);
             storage.put(scriptName,version);
+            toast("检测更新完成");
             return true;
         }
+        toast("检测无需更新");
         return false;
     }
 }
