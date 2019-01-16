@@ -17,7 +17,7 @@ templates.run({
     findNewsItem:function(){
         var newsItem = className("android.support.v4.view.ViewPager").className("LinearLayout").findOnce();
         //判断是否是广告
-        if(newsItem){
+        if(newsItem && newsItem.childCount() > 0){
             var adFlag = newsItem.child(1);
             if(adFlag && adFlag.text() == "广告"){
                 newsItem = null;
