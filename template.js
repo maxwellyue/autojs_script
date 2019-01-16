@@ -35,6 +35,11 @@ template.run = function(fun){
     utils.launch(initParam.appName);
 
     /**
+     * 自动更新
+     */
+    template.autoUpdate(fun);
+
+    /**
      * 回归首页的位置
      */
     template.jumpToIndex(fun.getIndexBtnItem);
@@ -59,6 +64,54 @@ template.run = function(fun){
         //返回新闻列表
         utils.backToIndex(initParam.indexFlagText);
     }
+}
+
+template.autoUpdate = function(fun){
+    var updateFlag = false;
+    var updateBtn;
+    if(text("安全升级").findOnce()){
+        updateFlag = true;
+        updateBtn = text("安全升级").findOnce();
+    }
+    if(text("立即升级").findOnce()){
+        updateFlag = true;
+        updateBtn = text("立即升级").findOnce();
+    }
+    if(text("升级").findOnce()){
+        updateFlag = true;
+        updateBtn = text("升级").findOnce();
+    }
+
+    if(updateFlag){
+        updateBtn.click();
+    }else{
+        return;
+    }
+
+    //循环找安装
+    var installFlag = false;
+    while(!installFlag){
+        sleep(1000);
+        var uiele = text("安装").findOnce();
+        toast("开始找安装");
+        if(uiele){
+            uiele.click();
+            installFlag = true;
+        }
+    }
+    //安装完成
+    var installFinishFlag = false;
+    while(!installFinishFlag){
+        sleep(1000);
+        var uiele = text("完成").findOnce();
+        if(uiele){
+            uiele.click();
+            installFinishFlag = true;
+        }
+    } 
+
+    //重新运行
+    template.run(fun);
 }
 
 /**
