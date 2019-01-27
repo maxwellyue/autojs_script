@@ -42,7 +42,7 @@ function init(){
 //获取主配置
 function getConfig(){
     toast("开始获取配置");
-    var url = "https://raw.githubusercontent.com/RyanPro/autojs_script/master/config.json";
+    var url = "https://raw.githubusercontent.com/maxwellyue/autojs_script/master/config.json";
     var str = http.get(url)
     str = JSON.parse(str.body.string());
     toast("配置获取完成");
@@ -110,7 +110,7 @@ function updateScript(scriptName){
         if(scriptName == name && version != scriptVersion){
             toast("检测开始更新");
             var path = "/sdcard/脚本/"+scriptName+".js";
-            var scriptContent = http.get("https://raw.githubusercontent.com/RyanPro/autojs_script/master/"+scriptName+".js").body.string();
+            var scriptContent = http.get("https://raw.githubusercontent.com/maxwellyue/autojs_script/master/"+scriptName+".js").body.string();
             files.write(path,scriptContent);
             storage.put(scriptName,version);
             toast("检测更新完成");
